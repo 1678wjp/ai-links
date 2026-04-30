@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 导航 - 常用 AI 工具链接</title>
+<style>
+  :root {
+    --bg: #0c0c18;
+    --card: #151528;
+    --card-hover: #1c1c38;
+    --border: #252545;
+    --text: #e0e0f0;
+    --muted: #8888aa;
+    --accent1: #6366f1;
+    --accent2: #a855f7;
+    --accent3: #ec4899;
+    --glow: rgba(99,102,241,0.15);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+  body::before {
+    content: '';
+    position: fixed; top:0; left:0; right:0; bottom:0;
+    background: radial-gradient(ellipse at 20% 0%, rgba(99,102,241,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(236,72,153,0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 60px 0 30px;
+  }
+  header h1 {
+    font-size: 42px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  /* Search */
+  .search-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 36px;
+  }
+  .search-box {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 14px 20px 14px 48px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .search-box input:focus {
+    border-color: var(--accent2);
+    box-shadow: 0 0 0 3px var(--glow);
+  }
+  .search-box input::placeholder { color: var(--muted); }
+  .search-box .icon {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    font-size: 18px; color: var(--muted);
+  }
+
+  /* Categories */
+  .cats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+  .cats button {
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.25s;
+  }
+  .cats button:hover { border-color: var(--accent2); color: var(--text); }
+  .cats button.active {
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    border-color: transparent;
+    color: #fff;
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    padding-bottom: 60px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.3s;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 0;
+    border-radius: 14px;
+  }
+  .card:hover {
+    border-color: var(--accent2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(99,102,241,0.15);
+  }
+  .card:hover::after { opacity: 0.06; }
+  .card .emoji {
+    font-size: 32px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .card .info {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .card .info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .card .info .desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card .info .domain {
+    font-size: 11px;
+    color: var(--muted);
+    opacity: 0.6;
+    margin-top: 6px;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 30px 0 50px;
+    color: var(--muted);
+    font-size: 13px;
+    position: relative;
+    z-index: 1;
+  }
+  footer a { color: var(--accent2); text-decoration: none; }
+
+  /* No results */
+  .no-results {
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 60px 0;
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    header h1 { font-size: 30px; }
+    header { padding: 40px 0 20px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>AI 导航</h1>
+    <p>常用 AI 工具一站直达</p>
+  </header>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <span class="icon">🔍</span>
+      <input type="text" id="search" placeholder="搜索 AI 工具...">
+    </div>
+  </div>
+
+  <div class="cats" id="cats"></div>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    觉得有用？收藏起来 · <a href="https://github.com">在 GitHub 上完善</a>
+  </footer>
+</div>
+
+<script>
+const links = [
+  // 🤖 AI对话
+  { emoji:'🤖', name:'DeepSeek', desc:'深度求索，超强推理，1M上下文，完全免费', url:'https://chat.deepseek.com', cat:'chat', domain:'chat.deepseek.com' },
+  { emoji:'🤖', name:'豆包', desc:'字节跳动出品，全能AI助手，多模态+语音克隆', url:'https://www.doubao.com', cat:'chat', domain:'doubao.com' },
+  { emoji:'🤖', name:'ChatGPT', desc:'OpenAI旗舰产品，最知名的AI助手', url:'https://chat.openai.com', cat:'chat', domain:'chat.openai.com' },
+  { emoji:'🤖', name:'Claude', desc:'Anthropic出品，长上下文+代码能力突出', url:'https://claude.ai', cat:'chat', domain:'claude.ai' },
+  { emoji:'🤖', name:'Gemini', desc:'Google多模态大模型，深度整合Google生态', url:'https://gemini.google.com', cat:'chat', domain:'gemini.google.com' },
+  { emoji:'🤖', name:'Kimi', desc:'月之暗面，超长上下文，擅长文档分析', url:'https://kimi.moonshot.cn', cat:'chat', domain:'kimi.moonshot.cn' },
+  { emoji:'🤖', name:'通义千问', desc:'阿里云出品，多模态对话+代码能力', url:'https://tongyi.aliyun.com', cat:'chat', domain:'tongyi.aliyun.com' },
+  { emoji:'🤖', name:'文心一言', desc:'百度出品，中文理解力强，深度整合百度搜索', url:'https://yiyan.baidu.com', cat:'chat', domain:'yiyan.baidu.com' },
+  { emoji:'🤖', name:'智谱清言', desc:'智谱AI出品，GLM大模型，代码+推理能力强', url:'https://chatglm.cn', cat:'chat', domain:'chatglm.cn' },
+  { emoji:'🤖', name:'腾讯元宝', desc:'腾讯混元大模型，整合微信/QQ生态', url:'https://yuanbao.tencent.com', cat:'chat', domain:'yuanbao.tencent.com' },
+  { emoji:'🤖', name:'Perplexity', desc:'AI原生搜索引擎，实时联网+深度研究', url:'https://www.perplexity.ai', cat:'chat', domain:'perplexity.ai' },
+  { emoji:'🤖', name:'Poe', desc:'Quora出品，集成多模型一站式平台', url:'https://poe.com', cat:'chat', domain:'poe.com' },
+  { emoji:'🤖', name:'IMA', desc:'腾讯智能工作台，知识库+文档分析', url:'https://ima.qq.com', cat:'chat', domain:'ima.qq.com' },
+
+  // 🎨 AI绘画
+  { emoji:'🎨', name:'Midjourney', desc:'最强AI绘画，艺术品质极高', url:'https://www.midjourney.com', cat:'image', domain:'midjourney.com' },
+  { emoji:'🎨', name:'DALL·E', desc:'OpenAI出品，自然语言生图', url:'https://labs.openai.com', cat:'image', domain:'labs.openai.com' },
+  { emoji:'🎨', name:'可灵 AI', desc:'快手出品，AI图片+视频生成', url:'https://klingai.com', cat:'image', domain:'klingai.com' },
+  { emoji:'🎨', name:'即梦', desc:'字节出品，AI绘画+视频创作', url:'https://jimeng.jianying.com', cat:'image', domain:'jimeng.jianying.com' },
+  { emoji:'🎨', name:'Leonardo.AI', desc:'专业级AI绘画平台，模型丰富', url:'https://leonardo.ai', cat:'image', domain:'leonardo.ai' },
+  { emoji:'🎨', name:'Civitai', desc:'Stable Diffusion模型社区，海量模型', url:'https://civitai.com', cat:'image', domain:'civitai.com' },
+  { emoji:'🎨', name:'LiblibAI', desc:'国内SD模型社区，中文友好', url:'https://www.liblib.art', cat:'image', domain:'liblib.art' },
+
+  // 🎬 AI视频
+  { emoji:'🎬', name:'可灵', desc:'快手出品，图生视频+文生视频', url:'https://klingai.com', cat:'video', domain:'klingai.com' },
+  { emoji:'🎬', name:'Runway', desc:'专业AI视频编辑，Gen-3模型', url:'https://runwayml.com', cat:'video', domain:'runwayml.com' },
+  { emoji:'🎬', name:'Pika', desc:'AI视频生成新秀，创意特效丰富', url:'https://pika.art', cat:'video', domain:'pika.art' },
+  { emoji:'🎬', name:'即梦', desc:'字节出品，AI视频生成+剪辑', url:'https://jimeng.jianying.com', cat:'video', domain:'jimeng.jianying.com' },
+  { emoji:'🎬', name:'海螺AI', desc:'AI视频生成，画质细腻', url:'https://hailuoai.com', cat:'video', domain:'hailuoai.com' },
+  { emoji:'🎬', name:'Sora', desc:'OpenAI文生视频，效果惊艳', url:'https://sora.com', cat:'video', domain:'sora.com' },
+  { emoji:'🎬', name:'剪映', desc:'字节出品，AI剪辑+智能字幕', url:'https://www.jianying.com', cat:'video', domain:'jianying.com' },
+
+  // 💻 AI编程
+  { emoji:'💻', name:'Cursor', desc:'AI原生IDE，智能代码补全+多文件编辑', url:'https://cursor.sh', cat:'code', domain:'cursor.sh' },
+  { emoji:'💻', name:'GitHub Copilot', desc:'GitHub出品，VSCode/JetBrains插件', url:'https://github.com/features/copilot', cat:'code', domain:'github.com' },
+  { emoji:'💻', name:'Windsurf', desc:'Codeium出品，AI驱动的IDE', url:'https://codeium.com/windsurf', cat:'code', domain:'codeium.com' },
+  { emoji:'💻', name:'v0.dev', desc:'Vercel出品，自然语言生成前端页面', url:'https://v0.dev', cat:'code', domain:'v0.dev' },
+  { emoji:'💻', name:'Bolt.new', desc:'StackBlitz出品，AI全栈应用生成', url:'https://bolt.new', cat:'code', domain:'bolt.new' },
+  { emoji:'💻', name:'Replit', desc:'在线IDE+AI编程助手', url:'https://replit.com', cat:'code', domain:'replit.com' },
+  { emoji:'💻', name:'通义灵码', desc:'阿里出品，AI编程助手，国产IDE插件', url:'https://tongyi.aliyun.com/lingma', cat:'code', domain:'tongyi.aliyun.com' },
+  { emoji:'💻', name:'MarsCode', desc:'字节出品，AI编程助手', url:'https://www.marscode.cn', cat:'code', domain:'marscode.cn' },
+
+  // 🔍 AI搜索
+  { emoji:'🔍', name:'Perplexity', desc:'AI原生搜索，实时联网+深度研究', url:'https://www.perplexity.ai', cat:'search', domain:'perplexity.ai' },
+  { emoji:'🔍', name:'秘塔AI搜索', desc:'国产AI搜索，无广告直达答案', url:'https://metaso.cn', cat:'search', domain:'metaso.cn' },
+  { emoji:'🔍', name:'天工AI搜索', desc:'昆仑万维出品，AI搜索+深度分析', url:'https://search.tiangong.cn', cat:'search', domain:'search.tiangong.cn' },
+  { emoji:'🔍', name:'Devv', desc:'开发者专用AI搜索引擎', url:'https://devv.ai', cat:'search', domain:'devv.ai' },
+  { emoji:'🔍', name:'纳米搜索', desc:'360出品，AI搜索', url:'https://www.n.cn', cat:'search', domain:'n.cn' },
+
+  // 🎵 AI音乐
+  { emoji:'🎵', name:'Suno', desc:'AI音乐生成，输入歌词即可出歌', url:'https://suno.ai', cat:'music', domain:'suno.ai' },
+  { emoji:'🎵', name:'Udio', desc:'AI音乐生成，音质极高', url:'https://www.udio.com', cat:'music', domain:'udio.com' },
+  { emoji:'🎵', name:'天工音乐', desc:'国产AI音乐生成', url:'https://music.tiangong.cn', cat:'music', domain:'music.tiangong.cn' },
+
+  // 🛠 AI工具
+  { emoji:'🛠', name:'Hugging Face', desc:'AI模型社区，开源模型大本营', url:'https://huggingface.co', cat:'tools', domain:'huggingface.co' },
+  { emoji:'🛠', name:'OpenRouter', desc:'多模型API聚合平台，统一接口', url:'https://openrouter.ai', cat:'tools', domain:'openrouter.ai' },
+  { emoji:'🛠', name:'Groq', desc:'超快推理API，LPU芯片驱动', url:'https://groq.com', cat:'tools', domain:'groq.com' },
+  { emoji:'🛠', name:'Replicate', desc:'云端运行开源AI模型', url:'https://replicate.com', cat:'tools', domain:'replicate.com' },
+  { emoji:'🛠', name:'Coze', desc:'字节出品，零代码搭建AI Bot', url:'https://www.coze.cn', cat:'tools', domain:'coze.cn' },
+  { emoji:'🛠', name:'Dify', desc:'开源LLM应用开发平台', url:'https://dify.ai', cat:'tools', domain:'dify.ai' },
+  { emoji:'🛠', name:'扣子', desc:'字节出品，AI智能体搭建平台', url:'https://www.coze.cn', cat:'tools', domain:'coze.cn' },
+];
+
+const categories = [
+  { key:'all', emoji:'🏠', label:'全部' },
+  { key:'chat', emoji:'🤖', label:'AI对话' },
+  { key:'image', emoji:'🎨', label:'AI绘画' },
+  { key:'video', emoji:'🎬', label:'AI视频' },
+  { key:'code', emoji:'💻', label:'AI编程' },
+  { key:'search', emoji:'🔍', label:'AI搜索' },
+  { key:'music', emoji:'🎵', label:'AI音乐' },
+  { key:'tools', emoji:'🛠', label:'AI工具' },
+];
+
+let activeCat = 'all';
+
+function renderCats() {
+  let h = '';
+  categories.forEach(c => {
+    h += `<button class="${c.key===activeCat?'active':''}" data-cat="${c.key}">${c.emoji} ${c.label}</button>`;
+  });
+  document.getElementById('cats').innerHTML = h;
+}
+
+function renderCards(filter = '') {
+  const grid = document.getElementById('grid');
+  let items = links;
+  if (activeCat !== 'all') items = items.filter(l => l.cat === activeCat);
+  if (filter) {
+    const q = filter.toLowerCase();
+    items = items.filter(l => l.name.toLowerCase().includes(q) || l.desc.toLowerCase().includes(q) || l.domain.toLowerCase().includes(q));
+  }
+  if (items.length === 0) {
+    grid.innerHTML = '<div class="no-results">😕 没找到匹配的 AI 工具，试试换个关键词？</div>';
+    return;
+  }
+  let h = '';
+  items.forEach(l => {
+    h += `
+      <a class="card" href="${l.url}" target="_blank" rel="noopener">
+        <span class="emoji">${l.emoji}</span>
+        <div class="info">
+          <h3>${l.name}</h3>
+          <div class="desc">${l.desc}</div>
+          <div class="domain">${l.domain}</div>
+        </div>
+      </a>`;
+  });
+  grid.innerHTML = h;
+}
+
+// Category clicks
+document.getElementById('cats').addEventListener('click', (e) => {
+  if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+    const btn = e.target.closest('button');
+    activeCat = btn.dataset.cat;
+    renderCats();
+    renderCards(document.getElementById('search').value);
+  }
+});
+
+// Search
+document.getElementById('search').addEventListener('input', (e) => {
+  if (e.target.value && activeCat !== 'all') {
+    activeCat = 'all';
+    renderCats();
+  }
+  renderCards(e.target.value);
+});
+
+// Init
+renderCats();
+renderCards();
+</script>
+
+</body>
+</html>
